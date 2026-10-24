@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 240" width="250" height="240">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#725f52"/>
+      <stop offset="100%" stop-color="#4a3b30"/>
+    </linearGradient>
+    <linearGradient id="brewGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#804a26"/>
+      <stop offset="60%" stop-color="#462512"/>
+      <stop offset="100%" stop-color="#231006"/>
+    </linearGradient>
+    <linearGradient id="glassGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.4"/>
+      <stop offset="25%" stop-color="#ffffff" stop-opacity="0.1"/>
+      <stop offset="75%" stop-color="#ffffff" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.3"/>
+    </linearGradient>
+  </defs>
+  <rect width="250" height="240" fill="url(#bgGrad)" rx="12"/>
+  <!-- Glass shadow -->
+  <ellipse cx="125" cy="216" rx="46" ry="9" fill="#1b120c" opacity="0.6"/>
+  <!-- Cold brew liquid body -->
+  <path d="M92 78 L158 78 L150 205 L100 205 Z" fill="url(#brewGrad)"/>
+  <!-- Ice cubes -->
+  <rect x="105" y="90" width="22" height="22" rx="3" fill="#ffffff" fill-opacity="0.36" stroke="#ffffff" stroke-width="1.2" transform="rotate(12 116 101)"/>
+  <rect x="122" y="125" width="20" height="20" rx="3" fill="#ffffff" fill-opacity="0.32" stroke="#ffffff" stroke-width="1.2" transform="rotate(-8 132 135)"/>
+  <rect x="108" y="152" width="18" height="18" rx="3" fill="#ffffff" fill-opacity="0.28" stroke="#ffffff" stroke-width="1.2" transform="rotate(18 117 161)"/>
+  <!-- Straw -->
+  <line x1="145" y1="35" x2="115" y2="200" stroke="#d49b6a" stroke-width="5" stroke-linecap="round"/>
+  <!-- Glass outline and highlights -->
+  <path d="M88 65 L162 65 L152 208 C151 214 145 218 138 218 L112 218 C105 218 99 214 98 208 Z" fill="url(#glassGrad)" stroke="#ffffff" stroke-width="1.6" stroke-opacity="0.55"/>
+  <ellipse cx="125" cy="65" rx="37" ry="6" fill="none" stroke="#ffffff" stroke-width="1.4" stroke-opacity="0.65"/>
+  <!-- Glass reflection highlight -->
+  <path d="M94 76 L99 202" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-opacity="0.5"/>
+  <!-- Condensation beads -->
+  <circle cx="106" cy="118" r="1.5" fill="#ffffff" opacity="0.6"/>
+  <circle cx="146" cy="144" r="1.5" fill="#ffffff" opacity="0.6"/>
+  <circle cx="142" cy="172" r="1.2" fill="#ffffff" opacity="0.5"/>
+</svg>

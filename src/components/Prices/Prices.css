@@ -1,0 +1,21 @@
+/** Pricing section and table cells. */
+#precios {
+    max-width: 900px;
+    margin: 40px auto;
+}
+
+.price-cell {
+    font-weight: 700;
+    color: var(--color-accent);
+    white-space: nowrap;
+}
+
+.category-divider th {
+    background-color: #ece8e1;
+    color: var(--background-dark);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 8px 18px;
+}

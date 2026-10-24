@@ -1,0 +1,95 @@
+/**
+ * @file Global stylesheet and design tokens for Javi's Coffee.
+ */
+
+/** Design tokens and theme variables. */
+:root {
+    --background-dark: #2f2c5c;
+    --background-medium: #4c3f81;
+    --background-light: #f5f4f0;
+    --font-dark: #232135;
+    --font-light: #dfe9ee;
+
+    --color-accent: #c68642;
+    --color-accent-hover: #b07232;
+    --color-surface: #ffffff;
+    --color-surface-soft: #fbf9f6;
+    --color-border: #e6e2dc;
+    --color-text-muted: #64607d;
+    --color-success: #2e7d32;
+    --color-error: #c62828;
+
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+
+    --shadow-sm: 0 2px 8px rgba(47, 44, 92, 0.08);
+    --shadow-md: 0 6px 18px rgba(47, 44, 92, 0.12);
+    --shadow-lg: 0 12px 30px rgba(47, 44, 92, 0.18);
+
+    --transition-fast: 0.2s ease;
+    --transition-smooth: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/** Global reset and box model. */
+* {
+    font-family: 'Ubuntu', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--background-light);
+    color: var(--font-dark);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+main section {
+    margin: 40px auto;
+    max-width: 1140px;
+    padding: 0 24px;
+}
+
+main section h2 {
+    text-align: center;
+    color: var(--background-dark);
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    position: relative;
+    letter-spacing: -0.5px;
+}
+
+main section h2::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 4px;
+    background-color: var(--color-accent);
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+/** Focus outline accessibility. */
+*:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+    main section {
+        padding: 0 16px;
+    }
+}

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 240" width="250" height="240">
+  <defs>
+    <linearGradient id="bgToast" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#68695d"/>
+      <stop offset="100%" stop-color="#44453b"/>
+    </linearGradient>
+    <linearGradient id="breadCrust" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8d5b2d"/>
+      <stop offset="100%" stop-color="#5a3717"/>
+    </linearGradient>
+    <linearGradient id="avocadoGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#a0c842"/>
+      <stop offset="100%" stop-color="#5f8c22"/>
+    </linearGradient>
+  </defs>
+  <rect width="250" height="240" fill="url(#bgToast)" rx="12"/>
+  <!-- Plate -->
+  <ellipse cx="125" cy="180" rx="95" ry="32" fill="#eceff1" stroke="#cfd8dc" stroke-width="2"/>
+  <!-- Toast bread crust -->
+  <rect x="52" y="98" width="146" height="74" rx="18" fill="url(#breadCrust)"/>
+  <!-- Toast crumb/crumb surface -->
+  <rect x="58" y="102" width="134" height="66" rx="14" fill="#deb887"/>
+  <!-- Avocado mash layers -->
+  <path d="M64 125 C75 110 95 112 110 118 C125 108 150 112 165 116 C178 120 186 135 180 148 C175 160 150 162 125 160 C95 162 70 155 64 138 Z" fill="url(#avocadoGrad)"/>
+  <path d="M80 135 C95 125 110 130 125 132 C140 128 155 132 165 140" fill="none" stroke="#7bb028" stroke-width="4" stroke-linecap="round"/>
+  <!-- Poached egg white -->
+  <ellipse cx="125" cy="136" rx="34" ry="22" fill="#ffffff" stroke="#f0f0f0" stroke-width="1.5"/>
+  <!-- Egg yolk -->
+  <ellipse cx="125" cy="135" rx="18" ry="14" fill="#ffb300"/>
+  <circle cx="121" cy="132" r="4" fill="#ffca28"/>
+  <circle cx="119" cy="130" r="1.5" fill="#ffffff" opacity="0.8"/>
+  <!-- Chili flakes and seeds -->
+  <circle cx="95" cy="140" r="1.5" fill="#d32f2f"/>
+  <circle cx="108" cy="122" r="1.5" fill="#d32f2f"/>
+  <circle cx="150" cy="142" r="1.5" fill="#d32f2f"/>
+  <circle cx="142" cy="126" r="1.2" fill="#1b1c15"/>
+  <circle cx="85" cy="132" r="1.2" fill="#1b1c15"/>
+</svg>

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 240" width="250" height="240">
+  <defs>
+    <linearGradient id="bgPastry" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#746050"/>
+      <stop offset="100%" stop-color="#4c3b2e"/>
+    </linearGradient>
+    <linearGradient id="crustGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f5b041"/>
+      <stop offset="40%" stop-color="#d35400"/>
+      <stop offset="100%" stop-color="#a04000"/>
+    </linearGradient>
+  </defs>
+  <rect width="250" height="240" fill="url(#bgPastry)" rx="12"/>
+  <!-- Plate -->
+  <ellipse cx="125" cy="180" rx="95" ry="30" fill="#f4ede2" stroke="#d5c7b3" stroke-width="2"/>
+  <ellipse cx="125" cy="178" rx="80" ry="24" fill="#faf6f0"/>
+  <!-- Croissant shadow -->
+  <ellipse cx="125" cy="172" rx="65" ry="14" fill="#a89a87" opacity="0.45"/>
+  <!-- Croissant central body -->
+  <path d="M48 160 C50 120 85 95 125 95 C165 95 200 120 202 160 C180 168 150 172 125 172 C100 172 70 168 48 160 Z" fill="url(#crustGrad)"/>
+  <!-- Segment layers -->
+  <path d="M72 155 C76 115 100 98 125 98 C150 98 174 115 178 155 C155 160 140 162 125 162 C110 162 95 160 72 155 Z" fill="#e67e22"/>
+  <path d="M92 148 C98 112 110 102 125 102 C140 102 152 112 158 148 C145 152 135 154 125 154 C115 154 105 152 92 148 Z" fill="#f39c12"/>
+  <path d="M108 140 C112 112 118 106 125 106 C132 106 138 112 142 140 C135 144 130 145 125 145 C120 145 115 144 108 140 Z" fill="#f8c471"/>
+  <!-- Crescent tips -->
+  <path d="M48 160 C40 164 35 172 40 176 C48 178 58 172 65 165 Z" fill="#a04000"/>
+  <path d="M202 160 C210 164 215 172 210 176 C202 178 192 172 185 165 Z" fill="#a04000"/>
+  <!-- Pastry flaky sheen -->
+  <path d="M115 112 Q125 110 135 112" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+  <circle cx="120" cy="130" r="1.5" fill="#fef9e7" opacity="0.7"/>
+  <circle cx="132" cy="126" r="1.5" fill="#fef9e7" opacity="0.7"/>
+</svg>

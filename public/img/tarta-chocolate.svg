@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 240" width="250" height="240">
+  <defs>
+    <linearGradient id="bgChoc" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#705d55"/>
+      <stop offset="100%" stop-color="#4a3a34"/>
+    </linearGradient>
+    <linearGradient id="chocSponge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a2e1b"/>
+      <stop offset="100%" stop-color="#2c1a0e"/>
+    </linearGradient>
+    <linearGradient id="ganache" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1c1109"/>
+      <stop offset="50%" stop-color="#3e2312"/>
+      <stop offset="100%" stop-color="#1c1109"/>
+    </linearGradient>
+  </defs>
+  <rect width="250" height="240" fill="url(#bgChoc)" rx="12"/>
+  <!-- Plate -->
+  <ellipse cx="125" cy="186" rx="95" ry="30" fill="#eaecee" stroke="#d5d8dc" stroke-width="2"/>
+  <!-- Cake slice -->
+  <polygon points="65,116 182,116 182,176 65,176" fill="url(#chocSponge)"/>
+  <!-- Middle cream ganache line -->
+  <rect x="65" y="142" width="117" height="6" fill="#1c1109"/>
+  <!-- Coffee bean on top -->
+  <ellipse cx="125" cy="98" rx="10" ry="14" fill="#3e2010" transform="rotate(30 125 98)"/>
+  <path d="M120 88 Q125 98 128 108" stroke="#1c0f07" stroke-width="2" fill="none"/>
+  <!-- Top ganache glaze -->
+  <polygon points="65,116 182,116 174,106 58,106" fill="url(#ganache)"/>
+  <polygon points="65,116 58,126 58,176 65,176" fill="#25160d"/>
+  <!-- Gloss drips -->
+  <path d="M80 116 Q83 138 87 116" fill="#1c1109"/>
+  <path d="M145 116 Q148 140 152 116" fill="#1c1109"/>
+  <!-- Golden sugar dust -->
+  <circle cx="100" cy="110" r="1.2" fill="#d4af37"/>
+  <circle cx="140" cy="112" r="1.2" fill="#d4af37"/>
+  <circle cx="112" cy="106" r="1.2" fill="#d4af37"/>
+</svg>

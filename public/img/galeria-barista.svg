@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" width="320" height="220">
+  <defs>
+    <linearGradient id="bgBarista" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#625f72"/>
+      <stop offset="100%" stop-color="#423f4f"/>
+    </linearGradient>
+    <linearGradient id="pitcherGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="50%" stop-color="#b2bec3"/>
+      <stop offset="100%" stop-color="#636e72"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="220" fill="url(#bgBarista)" rx="12"/>
+  <!-- Bar counter surface -->
+  <polygon points="0,175 320,175 320,220 0,220" fill="#303952"/>
+  <!-- Espresso cup on counter -->
+  <ellipse cx="130" cy="170" rx="42" ry="14" fill="#ffffff" stroke="#dcdde1" stroke-width="2"/>
+  <ellipse cx="130" cy="168" rx="35" ry="11" fill="#4a2e1b"/>
+  <!-- Rosette latte art inside cup -->
+  <path d="M125 168 C128 163 132 163 135 168 C132 171 128 171 125 168 Z" fill="#f5f6fa"/>
+  <circle cx="130" cy="164" r="2.5" fill="#f5f6fa"/>
+  <!-- Milk stream pouring down -->
+  <path d="M175 92 Q150 130 130 166" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+  <!-- Stainless steel milk pitcher pouring -->
+  <g transform="rotate(38 185 85)">
+    <!-- Pitcher body -->
+    <path d="M160 50 L210 50 L205 110 L165 110 Z" fill="url(#pitcherGrad)"/>
+    <!-- Spout -->
+    <polygon points="160,50 148,60 162,68" fill="#dfe6e9"/>
+    <!-- Handle -->
+    <path d="M210 60 C230 65 230 100 205 102" fill="none" stroke="#718093" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <!-- Barista apron silhouette hint -->
+  <path d="M205 15 C215 45 250 80 270 120 L320 120 L320 0 L230 0 Z" fill="#2c3e50" opacity="0.6"/>
+</svg>

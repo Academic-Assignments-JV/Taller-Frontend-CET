@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 240" width="250" height="240">
+  <defs>
+    <linearGradient id="bgMatcha" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#5e7058"/>
+      <stop offset="100%" stop-color="#3d4d38"/>
+    </linearGradient>
+    <linearGradient id="matchaLiquid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#88b04b"/>
+      <stop offset="100%" stop-color="#557a2b"/>
+    </linearGradient>
+  </defs>
+  <rect width="250" height="240" fill="url(#bgMatcha)" rx="12"/>
+  <!-- Coaster -->
+  <ellipse cx="125" cy="202" rx="75" ry="16" fill="#8f7457" stroke="#715a42" stroke-width="2"/>
+  <!-- Ceramic Cup -->
+  <path d="M72 105 C75 180 90 196 125 196 C160 196 175 180 178 105 Z" fill="#2c302e" stroke="#1d201e" stroke-width="2"/>
+  <!-- Glaze accent on ceramic -->
+  <path d="M72 105 C85 140 100 150 125 150 C150 150 165 140 178 105" fill="none" stroke="#4a524e" stroke-width="4" opacity="0.4"/>
+  <!-- Rim and Matcha Foam -->
+  <ellipse cx="125" cy="105" rx="53" ry="18" fill="#1d201e"/>
+  <ellipse cx="125" cy="105" rx="49" ry="15" fill="url(#matchaLiquid)"/>
+  <!-- Cream latte art swirl -->
+  <path d="M105 106 C115 115 135 115 145 106 C138 98 112 98 105 106 Z" fill="#f4f7eb" opacity="0.85"/>
+  <path d="M112 106 C120 110 130 110 138 106" fill="none" stroke="#557a2b" stroke-width="2"/>
+  <circle cx="125" cy="100" r="3" fill="#f4f7eb" opacity="0.9"/>
+  <!-- Steam -->
+  <path d="M125 75 C120 60 128 50 123 38" fill="none" stroke="#a3c479" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+</svg>

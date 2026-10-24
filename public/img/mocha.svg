@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 240" width="250" height="240">
+  <defs>
+    <linearGradient id="bgMocha" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6f5951"/>
+      <stop offset="100%" stop-color="#4a3832"/>
+    </linearGradient>
+    <linearGradient id="mochaLiquid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#80502c"/>
+      <stop offset="60%" stop-color="#4e2c14"/>
+      <stop offset="100%" stop-color="#231006"/>
+    </linearGradient>
+    <linearGradient id="creamSwirl" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="60%" stop-color="#faf5ec"/>
+      <stop offset="100%" stop-color="#eee2d0"/>
+    </linearGradient>
+  </defs>
+  <rect width="250" height="240" fill="url(#bgMocha)" rx="12"/>
+  <!-- Saucer plate -->
+  <ellipse cx="125" cy="204" rx="78" ry="16" fill="#cebfab" stroke="#b2a18b" stroke-width="2"/>
+  <ellipse cx="125" cy="202" rx="62" ry="10" fill="#eadecd"/>
+  <!-- Glass handle -->
+  <path d="M158 120 C186 120 186 168 152 170" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" opacity="0.6"/>
+  <!-- Glass body / liquid -->
+  <path d="M84 105 L166 105 L156 198 C155 204 148 206 140 206 L110 206 C102 206 95 204 94 198 Z" fill="url(#mochaLiquid)"/>
+  <!-- Chocolate sauce bottom layer -->
+  <path d="M96 178 L154 178 L156 198 C155 204 148 206 140 206 L110 206 C102 206 95 204 94 198 Z" fill="#1b0c04"/>
+  <!-- Glass edge highlight -->
+  <path d="M88 110 L95 195" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" opacity="0.45"/>
+  <!-- Whipped cream swirl mountain -->
+  <!-- Bottom cream puff -->
+  <ellipse cx="125" cy="104" rx="42" ry="14" fill="url(#creamSwirl)"/>
+  <!-- Mid cream puff -->
+  <path d="M94 100 C98 84 114 82 125 82 C138 82 152 84 156 100 Z" fill="url(#creamSwirl)"/>
+  <!-- Top cream peak -->
+  <path d="M106 86 C110 68 122 60 126 55 C129 64 140 72 144 86 Z" fill="url(#creamSwirl)"/>
+  <path d="M126 55 C128 50 134 48 135 52" stroke="#faf5ec" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- Chocolate syrup drizzle over whipped cream -->
+  <path d="M108 92 Q120 78 132 94" fill="none" stroke="#2a1205" stroke-width="3" stroke-linecap="round"/>
+  <path d="M118 78 Q126 68 136 82" fill="none" stroke="#2a1205" stroke-width="2.8" stroke-linecap="round"/>
+  <path d="M122 62 Q127 58 130 66" fill="none" stroke="#2a1205" stroke-width="2.4" stroke-linecap="round"/>
+  <!-- Chocolate flakes/dust -->
+  <circle cx="112" cy="85" r="1.3" fill="#2a1205"/>
+  <circle cx="138" cy="88" r="1.4" fill="#2a1205"/>
+  <circle cx="128" cy="74" r="1.2" fill="#2a1205"/>
+  <!-- Glass rim -->
+  <ellipse cx="125" cy="105" rx="43" ry="8" fill="none" stroke="#ffffff" stroke-width="1.6" opacity="0.5"/>
+</svg>

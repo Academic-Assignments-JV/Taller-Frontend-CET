@@ -1,0 +1,125 @@
+/** Reusable button styles and variants. */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 22px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+}
+
+.btn:disabled,
+.btn-add-cart:disabled,
+.btn-submit:disabled,
+.btn-reset:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-primary {
+    background-color: var(--color-accent);
+    color: #ffffff;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: var(--color-accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(198, 134, 66, 0.4);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--font-light);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    border-color: #ffffff;
+}
+
+.card-footer .btn-secondary {
+    color: var(--background-dark);
+    border-color: var(--background-dark);
+}
+
+.card-footer .btn-secondary:hover:not(:disabled) {
+    color: #ffffff;
+    background-color: var(--background-dark);
+}
+
+.product-admin-form .btn-secondary {
+    color: var(--background-dark);
+    border: 2px solid var(--background-dark);
+}
+
+.product-admin-form .btn-secondary:hover:not(:disabled) {
+    color: #ffffff;
+    background-color: var(--background-dark);
+}
+
+.btn-secondary-danger {
+    background-color: transparent;
+    color: #c62828;
+    border: 1px solid #c62828;
+    padding: 9px 16px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-secondary-danger:hover:not(:disabled) {
+    background-color: #c62828;
+    color: #ffffff;
+}
+
+.btn-add-cart {
+    background-color: var(--color-accent);
+    color: #ffffff;
+    border: none;
+    padding: 7px 14px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.btn-add-cart:hover:not(:disabled) {
+    background-color: var(--color-accent-hover);
+    transform: translateY(-2px);
+}
+
+.btn-submit {
+    background-color: var(--color-accent);
+    color: #ffffff;
+}
+
+.btn-submit:hover:not(:disabled) {
+    background-color: var(--color-accent-hover);
+}
+
+.btn-reset {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+.btn-reset:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+@media (max-width: 480px) {
+    .btn {
+        width: 100%;
+    }
+}

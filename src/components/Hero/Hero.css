@@ -1,0 +1,69 @@
+/** Hero presentation section. */
+#inicio.hero {
+    background: linear-gradient(135deg, var(--background-dark) 0%, var(--background-medium) 100%);
+    color: var(--font-light);
+    border-radius: var(--radius-lg);
+    padding: 56px 40px;
+    box-shadow: var(--shadow-md);
+    text-align: center;
+    margin-top: 24px;
+}
+
+#inicio.hero h2 {
+    color: #ffffff;
+    font-size: 2.3rem;
+    margin-bottom: 16px;
+}
+
+#inicio.hero h2::after {
+    background-color: var(--color-accent);
+}
+
+.hero-subtitle {
+    font-size: 1.15rem;
+    max-width: 720px;
+    margin: 0 auto 28px;
+    color: #e4e7eb;
+    line-height: 1.7;
+}
+
+.hero-pillars {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 32px;
+}
+
+.pillar-badge {
+    background-color: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 820px) {
+    #inicio.hero {
+        padding: 40px 20px;
+    }
+
+    #inicio.hero h2 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-actions {
+        flex-direction: column;
+    }
+}

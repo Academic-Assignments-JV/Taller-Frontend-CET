@@ -1,0 +1,308 @@
+/**
+ * @file Transversal and shared styles across multiple components (dialogs, tables, forms, states).
+ */
+
+/** Shared modal dialog shell (used by CartModal and DetailModal). */
+.cart-modal {
+    border: none;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    max-width: 760px;
+    width: 92vw;
+    max-height: 85vh;
+    padding: 0;
+    margin: auto;
+    background-color: var(--color-surface);
+    color: var(--font-dark);
+    overflow: hidden;
+}
+
+.cart-modal::backdrop {
+    background-color: rgba(35, 33, 53, 0.65);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.cart-modal[open] {
+    animation: modalFadeIn 0.22s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-16px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-dialog-content {
+    display: flex;
+    flex-direction: column;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 24px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+}
+
+.cart-modal .modal-header {
+    background-color: transparent;
+    color: var(--font-dark);
+    position: static;
+    z-index: auto;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.modal-header h2 {
+    font-size: 1.35rem;
+    margin-bottom: 0;
+    text-align: left;
+    color: var(--background-dark);
+}
+
+.modal-header h2::after {
+    display: none;
+}
+
+.modal-close-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.8rem;
+    line-height: 1;
+    color: var(--background-dark);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.modal-close-btn:hover {
+    color: var(--background-dark);
+    background-color: #f1ede8;
+}
+
+/** Shared table styles (used by Prices and CartModal). */
+.table-container {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+    background-color: var(--color-surface);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+table caption {
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    background-color: var(--background-medium);
+    color: var(--font-light);
+    padding: 16px 20px;
+    text-align: left;
+}
+
+table thead th {
+    background-color: var(--background-dark);
+    color: var(--font-light);
+    padding: 14px 18px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: left;
+    border: none;
+}
+
+table tbody tr {
+    border-bottom: 1px solid var(--color-border);
+    transition: background-color var(--transition-fast);
+}
+
+table tbody tr:last-child {
+    border-bottom: none;
+}
+
+table tbody tr:hover {
+    background-color: #f1ede8;
+}
+
+table th[scope="row"] {
+    padding: 14px 18px;
+    font-weight: 600;
+    color: var(--background-dark);
+    text-align: left;
+    white-space: nowrap;
+}
+
+table td {
+    padding: 14px 18px;
+    font-size: 0.92rem;
+    color: var(--font-dark);
+}
+
+/** Shared form structure (used by Contact, Admin, and CartModal). */
+form {
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+form label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.required-mark {
+    color: var(--color-accent);
+    margin-left: 2px;
+}
+
+.field-hint {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    line-height: 1.35;
+    margin-top: -2px;
+}
+
+.field-status-badge {
+    font-size: 0.74rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: 999px;
+    padding: 1px 8px;
+    line-height: 1.4;
+}
+
+.field-status-badge.is-valid {
+    color: var(--color-success);
+    background-color: rgba(46, 125, 50, 0.12);
+}
+
+.field-status-badge.is-invalid {
+    color: var(--color-error);
+    background-color: rgba(198, 40, 40, 0.12);
+}
+
+.field-error-msg {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--color-error);
+    line-height: 1.35;
+    margin-top: 2px;
+}
+
+.form-required-notice {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--background-dark);
+    background-color: rgba(198, 134, 66, 0.14);
+    border-left: 3px solid var(--color-accent);
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    line-height: 1.4;
+}
+
+.checkout-form input.input-invalid,
+.product-admin-form input.input-invalid,
+.product-admin-form select.input-invalid,
+.product-admin-form textarea.input-invalid {
+    border-color: var(--color-error);
+    background-color: #fff5f5;
+}
+
+.checkout-form input.input-valid,
+.product-admin-form input.input-valid,
+.product-admin-form select.input-valid,
+.product-admin-form textarea.input-valid {
+    border-color: var(--color-success);
+    background-color: #f6fbf7;
+}
+
+/** SweetAlert2 toast manual close button refinement. */
+.swal2-popup.swal2-toast .swal2-close {
+    align-self: center;
+    font-size: 1.35rem;
+    color: var(--color-text-muted);
+    margin-left: 6px;
+    transition: color var(--transition-fast);
+}
+
+.swal2-popup.swal2-toast .swal2-close:hover {
+    color: var(--font-dark);
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.form-actions button {
+    flex: 1;
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: opacity var(--transition-fast), background-color var(--transition-fast);
+}
+
+/** Shared empty/feedback utility classes. */
+.cart-empty {
+    text-align: center;
+    padding: 36px 20px;
+    color: var(--color-text-muted);
+    font-size: 1.05rem;
+}
+
+.status-error {
+    color: var(--color-error);
+    font-weight: 600;
+}
+
+.is-hidden {
+    display: none !important;
+}
+
+@media (max-width: 820px) {
+    .table-container {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 580px;
+    }
+}

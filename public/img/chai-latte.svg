@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 240" width="250" height="240">
+  <defs>
+    <linearGradient id="bgChai" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7a6250"/>
+      <stop offset="100%" stop-color="#524032"/>
+    </linearGradient>
+    <linearGradient id="mugGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ece2d0"/>
+      <stop offset="50%" stop-color="#faf6ee"/>
+      <stop offset="100%" stop-color="#d8cbb5"/>
+    </linearGradient>
+    <linearGradient id="teaGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ecd6b7"/>
+      <stop offset="100%" stop-color="#c99765"/>
+    </linearGradient>
+  </defs>
+  <rect width="250" height="240" fill="url(#bgChai)" rx="12"/>
+  <!-- Plate -->
+  <ellipse cx="125" cy="198" rx="80" ry="18" fill="#d1c3ad" stroke="#b4a389" stroke-width="2"/>
+  <ellipse cx="125" cy="196" rx="65" ry="12" fill="#ece2d0"/>
+  <!-- Mug handle -->
+  <path d="M165 115 C195 115 195 165 160 168" fill="none" stroke="#faf6ee" stroke-width="12" stroke-linecap="round"/>
+  <!-- Mug body -->
+  <path d="M78 95 C82 175 92 190 125 190 C158 190 168 175 172 95 Z" fill="url(#mugGrad)"/>
+  <!-- Mug rim/opening -->
+  <ellipse cx="125" cy="95" rx="47" ry="15" fill="#c99765"/>
+  <ellipse cx="125" cy="95" rx="43" ry="12" fill="url(#teaGrad)"/>
+  <!-- Spiced cinnamon foam sprinkle -->
+  <circle cx="118" cy="94" r="1.5" fill="#6f3b1b"/>
+  <circle cx="128" cy="97" r="1.8" fill="#6f3b1b"/>
+  <circle cx="134" cy="92" r="1.3" fill="#6f3b1b"/>
+  <circle cx="112" cy="96" r="1.2" fill="#6f3b1b"/>
+  <!-- Cinnamon stick sticking out -->
+  <path d="M142 62 L150 115" stroke="#78421c" stroke-width="6" stroke-linecap="round"/>
+  <path d="M140 62 L142 64" stroke="#a05d2c" stroke-width="2"/>
+  <!-- Steam waves -->
+  <path d="M110 70 C105 55 115 45 110 32" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" opacity="0.4"/>
+  <path d="M125 65 C120 50 130 40 125 25" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" opacity="0.5"/>
+  <path d="M138 72 C134 58 142 48 138 35" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.35"/>
+</svg>

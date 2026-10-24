@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 240" width="250" height="240">
+  <defs>
+    <linearGradient id="bgCake" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#755968"/>
+      <stop offset="100%" stop-color="#4f3644"/>
+    </linearGradient>
+    <linearGradient id="cakeCream" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff9e6"/>
+      <stop offset="100%" stop-color="#f8ebcc"/>
+    </linearGradient>
+    <linearGradient id="berryCoulis" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#900c3f"/>
+      <stop offset="50%" stop-color="#c70039"/>
+      <stop offset="100%" stop-color="#7a0833"/>
+    </linearGradient>
+  </defs>
+  <rect width="250" height="240" fill="url(#bgCake)" rx="12"/>
+  <!-- Plate -->
+  <ellipse cx="125" cy="186" rx="95" ry="30" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="2"/>
+  <!-- Cake Slice Shadow -->
+  <polygon points="60,180 185,182 175,190 70,188" fill="#382531" opacity="0.4"/>
+  <!-- Crust Base -->
+  <polygon points="65,166 182,166 172,176 58,176" fill="#8d5524"/>
+  <!-- Cake Cream Body Front/Side -->
+  <polygon points="65,116 182,116 182,166 65,166" fill="url(#cakeCream)"/>
+  <polygon points="65,116 58,126 58,176 65,166" fill="#eed9ae"/>
+  <!-- Berry coulis on top -->
+  <polygon points="65,116 182,116 174,106 58,106" fill="url(#berryCoulis)"/>
+  <!-- Berry coulis drips -->
+  <path d="M85 116 Q88 136 92 116" fill="#c70039"/>
+  <path d="M125 116 Q128 144 133 116" fill="#900c3f"/>
+  <path d="M155 116 Q158 132 161 116" fill="#c70039"/>
+  <!-- Berries on top -->
+  <circle cx="110" cy="100" r="10" fill="#900c3f" stroke="#580824" stroke-width="1"/>
+  <circle cx="126" cy="96" r="12" fill="#c70039" stroke="#900c3f" stroke-width="1"/>
+  <circle cx="140" cy="102" r="9" fill="#1b2631"/>
+  <circle cx="108" cy="98" r="2" fill="#ffffff" opacity="0.6"/>
+  <circle cx="124" cy="93" r="2.5" fill="#ffffff" opacity="0.6"/>
+  <!-- Mint leaf garnish -->
+  <path d="M136 85 C146 76 156 82 150 92 C142 90 138 86 136 85 Z" fill="#2ecc71"/>
+</svg>
