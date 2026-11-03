@@ -2,44 +2,51 @@ import { useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useShop } from '@/hooks'
 import { Button } from '@components/Button'
-import { showErrorAlert, showSuccessAlert, showToast } from '@utils/alerts'
-import { createProduct, updateProduct } from '@utils/api'
+import { showSuccessAlert, showToast } from '@utils/alerts'
 import type { Product, ProductInput } from '@utils/api'
 
 interface ProductFormProps {
     editingProduct: Product | null
 }
 
-type ProductField = 'nombre' | 'categoria' | 'precio' | 'imagen' | 'descripcion'
+type ProductField = 'nombre' | 'categoria' | 'precio' | 'stock' | 'imagen' | 'descripcion'
 
 const IMAGE_PATH_REGEX = /^(\.?\/|https?:\/\/|img\/).+/i
 
 export default function ProductForm({ editingProduct }: ProductFormProps) {
-    const { cancelProductEdit, refreshProducts } = useShop()
+    const { addProductInMemory, updateProductInMemory, cancelProductEdit } = useShop()
 
     const [nombre, setNombre] = useState(editingProduct?.nombre ?? '')
     const [categoria, setCategoria] = useState(editingProduct?.categoria ?? 'hot-coffee')
     const [precio, setPrecio] = useState(editingProduct ? String(editingProduct.precio) : '')
+    const [stock, setStock] = useState(editingProduct ? String(editingProduct.stock) : '15')
     const [imagen, setImagen] = useState(editingProduct?.imagen ?? '')
     const [descripcion, setDescripcion] = useState(editingProduct?.descripcion ?? '')
     const [touched, setTouched] = useState<Partial<Record<ProductField, boolean>>>({})
     const [submitAttempted, setSubmitAttempted] = useState(false)
-    const [isSubmitting, setIsSubmitting] = useState(false)
 
     const nombreRef = useRef<HTMLInputElement>(null)
     const categoriaRef = useRef<HTMLSelectElement>(null)
     const precioRef = useRef<HTMLInputElement>(null)
+    const stockRef = useRef<HTMLInputElement>(null)
     const imagenRef = useRef<HTMLInputElement>(null)
     const descripcionRef = useRef<HTMLTextAreaElement>(null)
 
     const trimmedNombre = nombre.trim()
     const trimmedPrecio = precio.trim()
     const parsedPrecio = Number(trimmedPrecio)
+    const trimmedStock = stock.trim()
+    const parsedStock = Number(trimmedStock)
     const trimmedImagen = imagen.trim()
     const trimmedDescripcion = descripcion.trim()
 
     const hasMissingRequired =
-        !trimmedNombre || !categoria || !trimmedPrecio || !trimmedImagen || !trimmedDescripcion
+        !trimmedNombre ||
+        !categoria ||
+        !trimmedPrecio ||
+        !trimmedStock ||
+        !trimmedImagen ||
+        !trimmedDescripcion
 
     const errors: Record<ProductField, string> = {
         nombre:
@@ -50,6 +57,11 @@ export default function ProductForm({ editingProduct }: ProductFormProps) {
         precio:
             trimmedPrecio && (Number.isNaN(parsedPrecio) || parsedPrecio <= 0)
                 ? 'Ingresa un precio válido mayor a $0.'
+                : '',
+        stock:
+            trimmedStock &&
+            (Number.isNaN(parsedStock) || parsedStock < 0 || !Number.isInteger(parsedStock))
+                ? 'Ingresa una cantidad de stock entera mayor o igual a 0.'
                 : '',
         imagen:
             trimmedImagen && !IMAGE_PATH_REGEX.test(trimmedImagen)
@@ -79,6 +91,7 @@ export default function ProductForm({ editingProduct }: ProductFormProps) {
             nombre: nombreRef.current,
             categoria: categoriaRef.current,
             precio: precioRef.current,
+            stock: stockRef.current,
             imagen: imagenRef.current,
             descripcion: descripcionRef.current
         }
@@ -89,6 +102,7 @@ export default function ProductForm({ editingProduct }: ProductFormProps) {
         setNombre('')
         setCategoria('hot-coffee')
         setPrecio('')
+        setStock('15')
         setImagen('')
         setDescripcion('')
         setTouched({})
@@ -109,6 +123,7 @@ export default function ProductForm({ editingProduct }: ProductFormProps) {
             nombre: Boolean(trimmedNombre),
             categoria: Boolean(categoria),
             precio: Boolean(trimmedPrecio),
+            stock: Boolean(trimmedStock),
             imagen: Boolean(trimmedImagen),
             descripcion: Boolean(trimmedDescripcion)
         })
@@ -120,11 +135,13 @@ export default function ProductForm({ editingProduct }: ProductFormProps) {
                   ? 'categoria'
                   : !trimmedPrecio || errors.precio
                     ? 'precio'
-                    : !trimmedImagen || errors.imagen
-                      ? 'imagen'
-                      : !trimmedDescripcion || errors.descripcion
-                        ? 'descripcion'
-                        : undefined
+                    : !trimmedStock || errors.stock
+                      ? 'stock'
+                      : !trimmedImagen || errors.imagen
+                        ? 'imagen'
+                        : !trimmedDescripcion || errors.descripcion
+                          ? 'descripcion'
+                          : undefined
 
         if (firstIncompleteOrInvalid) {
             focusField(firstIncompleteOrInvalid)
@@ -136,37 +153,25 @@ export default function ProductForm({ editingProduct }: ProductFormProps) {
             nombre: trimmedNombre,
             categoria,
             precio: parsedPrecio,
+            stock: parsedStock,
             imagen: trimmedImagen,
             descripcion: trimmedDescripcion
         }
 
-        setIsSubmitting(true)
-        try {
-            if (editingProduct) {
-                await updateProduct(editingProduct.id, productInput)
-                cancelProductEdit()
-                await refreshProducts()
-                await showSuccessAlert(
-                    'Producto actualizado',
-                    `Los cambios en "${productInput.nombre}" se guardaron correctamente.`
-                )
-            } else {
-                await createProduct(productInput)
-                resetFields()
-                await refreshProducts()
-                await showSuccessAlert(
-                    'Producto creado',
-                    `"${productInput.nombre}" fue agregado al catálogo.`
-                )
-            }
-        } catch (saveError) {
-            console.error('No se pudo guardar el producto:', saveError)
-            await showErrorAlert(
-                'Error al guardar',
-                'No se pudo guardar el producto en el servidor. Intenta nuevamente.'
+        if (editingProduct) {
+            updateProductInMemory(editingProduct.id, productInput)
+            cancelProductEdit()
+            await showSuccessAlert(
+                'Producto actualizado',
+                `Los cambios en "${productInput.nombre}" se guardaron en memoria.`
             )
-        } finally {
-            setIsSubmitting(false)
+        } else {
+            addProductInMemory(productInput)
+            resetFields()
+            await showSuccessAlert(
+                'Producto creado en memoria',
+                `"${productInput.nombre}" fue agregado al catálogo en memoria.`
+            )
         }
     }
 
@@ -206,7 +211,6 @@ export default function ProductForm({ editingProduct }: ProductFormProps) {
                     onBlur={() => {
                         if (trimmedNombre) markTouched('nombre')
                     }}
-                    disabled={isSubmitting}
                     required
                 />
                 {touched.nombre && errors.nombre && (
@@ -237,7 +241,6 @@ export default function ProductForm({ editingProduct }: ProductFormProps) {
                         markTouched('categoria')
                     }}
                     onBlur={() => markTouched('categoria')}
-                    disabled={isSubmitting}
                     required
                 >
                     <option value="hot-coffee">Cafés Calientes</option>
@@ -275,12 +278,48 @@ export default function ProductForm({ editingProduct }: ProductFormProps) {
                     onBlur={() => {
                         if (trimmedPrecio) markTouched('precio')
                     }}
-                    disabled={isSubmitting}
                     required
                 />
                 {touched.precio && errors.precio && (
                     <div id="product-price-error" className="field-error-msg" role="alert">
                         <span aria-hidden="true">⚠</span> {errors.precio}
+                    </div>
+                )}
+            </div>
+            <div className="form-group">
+                <label htmlFor="product-stock">
+                    <span>
+                        Stock disponible<span className="required-mark">*</span>
+                    </span>
+                    {isFieldValid('stock', Boolean(trimmedStock)) && (
+                        <span className="field-status-badge is-valid" aria-hidden="true">
+                            ✓ Válido
+                        </span>
+                    )}
+                </label>
+                <input
+                    ref={stockRef}
+                    type="number"
+                    id="product-stock"
+                    name="stock"
+                    min="0"
+                    step="1"
+                    placeholder="Ej. 15"
+                    value={stock}
+                    className={getFieldClass('stock', Boolean(trimmedStock))}
+                    aria-invalid={touched.stock && Boolean(errors.stock) ? 'true' : undefined}
+                    aria-errormessage={
+                        touched.stock && errors.stock ? 'product-stock-error' : undefined
+                    }
+                    onChange={(e) => setStock(e.target.value)}
+                    onBlur={() => {
+                        if (trimmedStock) markTouched('stock')
+                    }}
+                    required
+                />
+                {touched.stock && errors.stock && (
+                    <div id="product-stock-error" className="field-error-msg" role="alert">
+                        <span aria-hidden="true">⚠</span> {errors.stock}
                     </div>
                 )}
             </div>
@@ -318,7 +357,6 @@ export default function ProductForm({ editingProduct }: ProductFormProps) {
                     onBlur={() => {
                         if (trimmedImagen) markTouched('imagen')
                     }}
-                    disabled={isSubmitting}
                     required
                 />
                 {touched.imagen && errors.imagen && (
@@ -359,7 +397,6 @@ export default function ProductForm({ editingProduct }: ProductFormProps) {
                     onBlur={() => {
                         if (trimmedDescripcion) markTouched('descripcion')
                     }}
-                    disabled={isSubmitting}
                     required
                 />
                 {touched.descripcion && errors.descripcion && (
@@ -374,24 +411,14 @@ export default function ProductForm({ editingProduct }: ProductFormProps) {
                 </p>
             )}
             <div className="form-actions">
-                <Button
-                    type="submit"
-                    variant="primary"
-                    id="product-submit"
-                    disabled={isSubmitting}
-                >
-                    {isSubmitting
-                        ? 'Guardando...'
-                        : editingProduct
-                          ? 'Guardar cambios'
-                          : 'Crear producto'}
+                <Button type="submit" variant="primary" id="product-submit">
+                    {editingProduct ? 'Guardar cambios' : 'Crear producto'}
                 </Button>
                 {editingProduct && (
                     <Button
                         type="button"
                         variant="secondary"
                         id="product-cancel"
-                        disabled={isSubmitting}
                         onClick={handleCancel}
                     >
                         Cancelar edición

@@ -61,6 +61,63 @@ header a.nav-active {
     color: #ffffff;
 }
 
+/** Navbar user session & login/logout buttons. */
+.nav-user-session {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.12);
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+.nav-user-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.84rem;
+    color: #ffffff;
+    white-space: nowrap;
+}
+
+.nav-role-badge {
+    background-color: var(--color-accent);
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 999px;
+}
+
+.nav-auth-btn {
+    background-color: rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-weight: 600;
+    transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.nav-auth-btn:hover {
+    background-color: rgba(255, 255, 255, 0.28);
+    border-color: #ffffff;
+}
+
+.nav-logout-btn {
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    background-color: rgba(198, 40, 40, 0.8);
+    border-color: transparent;
+}
+
+.nav-logout-btn:hover {
+    background-color: var(--color-error);
+}
+
 /** Shopping cart navbar trigger button. */
 .nav-cart-btn {
     background-color: var(--color-accent);

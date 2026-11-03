@@ -1,23 +1,41 @@
 import { createContext, useContext } from 'react'
 import type { RefObject } from 'react'
-import type { CartItem, Product } from '@utils/api'
+import type { AuthUser, CartItem, Product, ProductInput } from '@utils/api'
+
+export type AppRoute = '/' | '/admin'
 
 export interface ShopContextValue {
+    // Routing (SPA)
+    currentPath: AppRoute
+    navigate: (path: AppRoute, hash?: string) => void
+
     // Catalog & filtering
     products: Product[]
     allProducts: Product[]
     selectedCategory: string
+    searchQuery: string
     isLoading: boolean
     error: string | null
     setSelectedCategory: (category: string) => void
+    setSearchQuery: (query: string) => void
     refreshProducts: () => Promise<void>
 
-    // Product Administration (CRUD)
+    // Product Administration (In-memory state)
     adminSectionRef: RefObject<HTMLElement | null>
     editingProduct: Product | null
+    addProductInMemory: (productInput: ProductInput) => Product
+    updateProductInMemory: (id: string | number, productInput: ProductInput) => void
     selectProductForEdit: (product: Product) => void
     cancelProductEdit: () => void
     removeProduct: (id: string | number) => Promise<void>
+
+    // Simulated Authentication (In-memory context)
+    user: AuthUser | null
+    isLoginOpen: boolean
+    openLogin: () => void
+    closeLogin: () => void
+    login: (correo: string, password: string) => boolean
+    logout: () => void
 
     // Shopping Cart & Cart Modal
     cart: CartItem[]

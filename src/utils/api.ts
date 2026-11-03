@@ -11,9 +11,53 @@ export interface Product {
     precio: number;
     imagen: string;
     descripcion: string;
+    stock: number;
 }
 
 export type ProductInput = Omit<Product, 'id'>;
+
+export type UserRole = 'user' | 'admin';
+
+export interface AuthUser {
+    nombre: string;
+    correo: string;
+    role: UserRole;
+}
+
+export interface TestUserCredential extends AuthUser {
+    password: string;
+}
+
+export function getTestUsers(): TestUserCredential[] {
+    const rawUsers = (import.meta.env.TEST_USERS || import.meta.env.VITE_TEST_USERS) as
+        | string
+        | undefined;
+    if (!rawUsers) {
+        return [];
+    }
+    try {
+        const parsed = JSON.parse(rawUsers) as unknown;
+        if (!Array.isArray(parsed)) return [];
+        return parsed
+            .filter(
+                (item): item is Record<string, unknown> =>
+                    typeof item === 'object' && item !== null
+            )
+            .map((item): TestUserCredential => {
+                const role: UserRole = item.role === 'admin' ? 'admin' : 'user';
+                return {
+                    nombre: String(item.nombre ?? 'Usuario'),
+                    correo: String(item.correo ?? ''),
+                    password: String(item.password ?? ''),
+                    role
+                };
+            })
+            .filter((user) => Boolean(user.correo && user.password));
+    } catch (parseError) {
+        console.error('Error al leer VITE_TEST_USERS:', parseError);
+        return [];
+    }
+}
 
 export interface OrderItem {
     id: string | number;
@@ -70,8 +114,9 @@ export function formatCurrency(amount: number): string {
     return '$' + Number(amount).toLocaleString('es-CO');
 }
 
-interface ApiProduct extends Omit<Product, 'precio'> {
+interface ApiProduct extends Omit<Product, 'precio' | 'stock'> {
     precio: string | number;
+    stock?: string | number;
 }
 
 async function requestJson(url: string, options: RequestInit = {}): Promise<unknown> {
@@ -83,9 +128,14 @@ async function requestJson(url: string, options: RequestInit = {}): Promise<unkn
 }
 
 function normalizeProduct(product: ApiProduct): Product {
+    const parsedStock =
+        product.stock !== undefined && product.stock !== null && product.stock !== ''
+            ? Number(product.stock)
+            : 15;
     return {
         ...product,
-        precio: Number(product.precio)
+        precio: Number(product.precio),
+        stock: Number.isNaN(parsedStock) || parsedStock < 0 ? 15 : parsedStock
     };
 }
 

@@ -1,0 +1,35 @@
+/** Simulated login modal styles. */
+.login-modal {
+    max-width: 440px;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+    color: var(--font-dark);
+    font-size: 0.9rem;
+    min-height: 40px;
+    transition:
+        border-color var(--transition-fast),
+        background-color var(--transition-fast),
+        box-shadow var(--transition-fast);
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(198, 134, 66, 0.18);
+}
+
+.login-form input.input-invalid {
+    border-color: var(--color-error);
+    background-color: #fff5f5;
+}
+
+.login-form input.input-valid {
+    border-color: var(--color-success);
+    background-color: #f6fbf7;
+}

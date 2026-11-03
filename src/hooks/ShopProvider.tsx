@@ -2,54 +2,116 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import {
     showConfirmDialog,
-    showErrorAlert,
     showSuccessAlert,
     showToast
 } from '@utils/alerts'
-import { deleteProduct, getProducts } from '@utils/api'
-import type { CartItem, Product } from '@utils/api'
+import { getProducts, getTestUsers } from '@utils/api'
+import type { AuthUser, CartItem, Product, ProductInput } from '@utils/api'
 import { ShopContext } from './useShop'
+import type { AppRoute } from './useShop'
 
 interface ShopProviderProps {
     children: ReactNode
 }
 
+function normalizeText(value: string): string {
+    return value
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim()
+}
+
+function resolveRoute(pathname: string): AppRoute {
+    return pathname === '/admin' ? '/admin' : '/'
+}
+
 export function ShopProvider({ children }: ShopProviderProps) {
+    const [requestedPath, setRequestedPath] = useState<AppRoute>(() =>
+        resolveRoute(window.location.pathname)
+    )
     const [selectedCategory, setSelectedCategory] = useState<string>('all')
+    const [searchQuery, setSearchQuery] = useState<string>('')
     const [allProducts, setAllProducts] = useState<Product[]>([])
-    const [products, setProducts] = useState<Product[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [error, setError] = useState<string | null>(null)
 
     const adminSectionRef = useRef<HTMLElement | null>(null)
     const [editingProduct, setEditingProduct] = useState<Product | null>(null)
 
+    const [user, setUser] = useState<AuthUser | null>(null)
+    const [isLoginOpen, setIsLoginOpen] = useState<boolean>(false)
+
     const [cart, setCart] = useState<CartItem[]>([])
     const [isCartOpen, setIsCartOpen] = useState<boolean>(false)
 
     const [detailProductId, setDetailProductId] = useState<string | number | null>(null)
 
+    const currentPath: AppRoute =
+        requestedPath === '/admin' && user?.role === 'admin' ? '/admin' : '/'
+
+    const navigate = useCallback(
+        (path: AppRoute, hash?: string) => {
+            if (path === '/admin' && user?.role !== 'admin') {
+                window.history.replaceState({}, '', '/')
+                setRequestedPath('/')
+                showToast('Acceso restringido: se requiere perfil de administrador', 'warning')
+                return
+            }
+
+            const targetUrl = hash ? `${path}${hash}` : path
+            if (window.location.pathname !== path || (hash && window.location.hash !== hash)) {
+                window.history.pushState({}, '', targetUrl)
+            }
+            setRequestedPath(path)
+            if (hash) {
+                window.dispatchEvent(new HashChangeEvent('hashchange'))
+                setTimeout(() => {
+                    const element = document.querySelector(hash)
+                    element?.scrollIntoView({ behavior: 'smooth' })
+                }, 30)
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+            }
+        },
+        [user]
+    )
+
+    useEffect(() => {
+        function handlePopState() {
+            const target = resolveRoute(window.location.pathname)
+            if (target === '/admin' && user?.role !== 'admin') {
+                window.history.replaceState({}, '', '/')
+                setRequestedPath('/')
+                showToast('Acceso restringido: se requiere perfil de administrador', 'warning')
+                return
+            }
+            setRequestedPath(target)
+        }
+        window.addEventListener('popstate', handlePopState)
+        return () => window.removeEventListener('popstate', handlePopState)
+    }, [user])
+
+    useEffect(() => {
+        if (window.location.pathname === '/admin' && user?.role !== 'admin') {
+            window.history.replaceState({}, '', '/')
+            showToast('Acceso restringido: se requiere perfil de administrador', 'warning')
+        }
+    }, [user])
+
     const refreshProducts = useCallback(async () => {
         setIsLoading(true)
         setError(null)
         try {
-            const [fullCatalog, categoryCatalog] = await Promise.all([
-                getProducts('all'),
-                selectedCategory === 'all' ? Promise.resolve(null) : getProducts(selectedCategory)
-            ])
+            const fullCatalog = await getProducts('all')
             setAllProducts(fullCatalog)
-            setProducts(categoryCatalog ?? fullCatalog)
         } catch (loadError) {
             console.error('No se pudo cargar el catálogo de productos:', loadError)
-            setError(
-                selectedCategory === 'all'
-                    ? 'No se pudo cargar el menú. Intenta nuevamente.'
-                    : 'No se pudo cargar esta categoría.'
-            )
+            setError('No se pudo cargar el menú. Intenta nuevamente.')
         } finally {
             setIsLoading(false)
         }
-    }, [selectedCategory])
+    }, [])
 
     useEffect(() => {
         let isCurrent = true
@@ -58,24 +120,14 @@ export function ShopProvider({ children }: ShopProviderProps) {
             setIsLoading(true)
             setError(null)
             try {
-                const [fullCatalog, categoryCatalog] = await Promise.all([
-                    getProducts('all'),
-                    selectedCategory === 'all'
-                        ? Promise.resolve(null)
-                        : getProducts(selectedCategory)
-                ])
+                const fullCatalog = await getProducts('all')
                 if (isCurrent) {
                     setAllProducts(fullCatalog)
-                    setProducts(categoryCatalog ?? fullCatalog)
                 }
             } catch (loadError) {
                 console.error('No se pudo cargar el catálogo de productos:', loadError)
                 if (isCurrent) {
-                    setError(
-                        selectedCategory === 'all'
-                            ? 'No se pudo cargar el menú. Intenta nuevamente.'
-                            : 'No se pudo cargar esta categoría.'
-                    )
+                    setError('No se pudo cargar el menú. Intenta nuevamente.')
                 }
             } finally {
                 if (isCurrent) setIsLoading(false)
@@ -86,13 +138,61 @@ export function ShopProvider({ children }: ShopProviderProps) {
         return () => {
             isCurrent = false
         }
-    }, [selectedCategory])
-
-    const selectProductForEdit = useCallback((product: Product) => {
-        setEditingProduct(product)
-        adminSectionRef.current?.scrollIntoView({ behavior: 'smooth' })
-        showToast(`Editando: ${product.nombre}`, 'info')
     }, [])
+
+    const products = useMemo(() => {
+        const normalizedSearch = normalizeText(searchQuery)
+        return allProducts.filter((product) => {
+            const matchesCategory =
+                selectedCategory === 'all' || product.categoria === selectedCategory
+            const matchesSearch =
+                !normalizedSearch ||
+                normalizeText(product.nombre).includes(normalizedSearch)
+            return matchesCategory && matchesSearch
+        })
+    }, [allProducts, selectedCategory, searchQuery])
+
+    const addProductInMemory = useCallback((productInput: ProductInput): Product => {
+        const createdProduct: Product = {
+            ...productInput,
+            id: `local-${Date.now()}`
+        }
+        setAllProducts((prev) => [createdProduct, ...prev])
+        return createdProduct
+    }, [])
+
+    const updateProductInMemory = useCallback(
+        (id: string | number, productInput: ProductInput) => {
+            setAllProducts((prev) =>
+                prev.map((product) =>
+                    String(product.id) === String(id)
+                        ? { ...productInput, id: product.id }
+                        : product
+                )
+            )
+            setCart((prevCart) =>
+                prevCart.map((item) =>
+                    String(item.product.id) === String(id)
+                        ? { ...item, product: { ...productInput, id: item.product.id } }
+                        : item
+                )
+            )
+        },
+        []
+    )
+
+    const selectProductForEdit = useCallback(
+        (product: Product) => {
+            setEditingProduct(product)
+            if (currentPath !== '/admin') {
+                navigate('/admin')
+            } else {
+                adminSectionRef.current?.scrollIntoView({ behavior: 'smooth' })
+            }
+            showToast(`Editando: ${product.nombre}`, 'info')
+        },
+        [currentPath, navigate]
+    )
 
     const cancelProductEdit = useCallback(() => {
         setEditingProduct(null)
@@ -107,26 +207,54 @@ export function ShopProvider({ children }: ShopProviderProps) {
             )
             if (!confirmed) return
 
-            try {
-                await deleteProduct(id)
-                if (editingProduct && String(editingProduct.id) === String(id)) {
-                    setEditingProduct(null)
-                }
-                await refreshProducts()
-                await showSuccessAlert(
-                    'Producto eliminado',
-                    'El producto fue eliminado correctamente del catálogo.'
-                )
-            } catch (deleteError) {
-                console.error('No se pudo eliminar el producto:', deleteError)
-                await showErrorAlert(
-                    'Error al eliminar',
-                    'No se pudo eliminar el producto. Intenta nuevamente.'
-                )
+            setAllProducts((prev) => prev.filter((item) => String(item.id) !== String(id)))
+            setCart((prevCart) =>
+                prevCart.filter((item) => String(item.product.id) !== String(id))
+            )
+            if (editingProduct && String(editingProduct.id) === String(id)) {
+                setEditingProduct(null)
             }
+            await showSuccessAlert(
+                'Producto eliminado',
+                'El producto fue eliminado correctamente del catálogo en memoria.'
+            )
         },
-        [editingProduct, refreshProducts]
+        [editingProduct]
     )
+
+    const openLogin = useCallback(() => setIsLoginOpen(true), [])
+    const closeLogin = useCallback(() => setIsLoginOpen(false), [])
+
+    const login = useCallback((correo: string, password: string): boolean => {
+        const normalizedEmail = correo.trim().toLowerCase()
+        const testUsers = getTestUsers()
+        const matched = testUsers.find(
+            (candidate) =>
+                candidate.correo.toLowerCase() === normalizedEmail &&
+                candidate.password === password
+        )
+        if (!matched) {
+            return false
+        }
+        setUser({
+            nombre: matched.nombre,
+            correo: matched.correo,
+            role: matched.role
+        })
+        setIsLoginOpen(false)
+        showToast(`¡Bienvenido, ${matched.nombre}!`)
+        return true
+    }, [])
+
+    const logout = useCallback(() => {
+        setUser(null)
+        setEditingProduct(null)
+        setRequestedPath('/')
+        if (window.location.pathname !== '/') {
+            window.history.pushState({}, '', '/')
+        }
+        showToast('Sesión cerrada correctamente', 'info')
+    }, [])
 
     const addToCart = useCallback((product: Product) => {
         setCart((prevCart) => {
@@ -200,18 +328,30 @@ export function ShopProvider({ children }: ShopProviderProps) {
 
     const value = useMemo(
         () => ({
+            currentPath,
+            navigate,
             products,
             allProducts,
             selectedCategory,
+            searchQuery,
             isLoading,
             error,
             setSelectedCategory,
+            setSearchQuery,
             refreshProducts,
             adminSectionRef,
             editingProduct,
+            addProductInMemory,
+            updateProductInMemory,
             selectProductForEdit,
             cancelProductEdit,
             removeProduct,
+            user,
+            isLoginOpen,
+            openLogin,
+            closeLogin,
+            login,
+            logout,
             cart,
             totalQuantity,
             totalPrice,
@@ -228,16 +368,27 @@ export function ShopProvider({ children }: ShopProviderProps) {
             closeProductDetail
         }),
         [
+            currentPath,
+            navigate,
             products,
             allProducts,
             selectedCategory,
+            searchQuery,
             isLoading,
             error,
             refreshProducts,
             editingProduct,
+            addProductInMemory,
+            updateProductInMemory,
             selectProductForEdit,
             cancelProductEdit,
             removeProduct,
+            user,
+            isLoginOpen,
+            openLogin,
+            closeLogin,
+            login,
+            logout,
             cart,
             totalQuantity,
             totalPrice,

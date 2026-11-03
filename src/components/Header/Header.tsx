@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import type { MouseEvent } from 'react'
 import { useShop } from '@/hooks'
 import './Header.css'
 
@@ -12,7 +13,17 @@ const NAV_ITEMS = [
 ] as const
 
 export default function Header() {
-    const { totalQuantity, isCartOpen, openCart } = useShop()
+    const {
+        currentPath,
+        navigate,
+        totalQuantity,
+        isCartOpen,
+        openCart,
+        user,
+        isLoginOpen,
+        openLogin,
+        logout
+    } = useShop()
     const [activeHash, setActiveHash] = useState<string>(() => window.location.hash || '#inicio')
 
     useEffect(() => {
@@ -26,13 +37,26 @@ export default function Header() {
         return () => window.removeEventListener('hashchange', handleHashChange)
     }, [])
 
+    function handleSectionClick(event: MouseEvent<HTMLAnchorElement>, hash: string) {
+        setActiveHash(hash)
+        if (currentPath !== '/') {
+            event.preventDefault()
+            navigate('/', hash)
+        }
+    }
+
+    function handleAdminClick(event: MouseEvent<HTMLAnchorElement>) {
+        event.preventDefault()
+        navigate('/admin')
+    }
+
     return (
         <header>
             <a
-                href="#inicio"
+                href="/#inicio"
                 className="brand-wrapper"
                 aria-label="Ir a inicio de Cafetería de Javi"
-                onClick={() => setActiveHash('#inicio')}
+                onClick={(e) => handleSectionClick(e, '#inicio')}
             >
                 <svg className="brand-icon" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M2,21H20V19H2M20,8H18V5H20M20,3H4V13A4,4 0,0,0 8,17H14A4,4 0,0,0 18,13V10H20A2,2 0,0,0 22,8V5C22,3.89 21.1,3 20,3Z" />
@@ -44,14 +68,60 @@ export default function Header() {
                     {NAV_ITEMS.map((item) => (
                         <li key={item.href}>
                             <a
-                                href={item.href}
-                                className={activeHash === item.href ? 'nav-active' : undefined}
-                                onClick={() => setActiveHash(item.href)}
+                                href={`/${item.href}`}
+                                className={
+                                    currentPath === '/' && activeHash === item.href
+                                        ? 'nav-active'
+                                        : undefined
+                                }
+                                onClick={(e) => handleSectionClick(e, item.href)}
                             >
                                 {item.name}
                             </a>
                         </li>
                     ))}
+                    {user?.role === 'admin' && (
+                        <li>
+                            <a
+                                href="/admin"
+                                className={currentPath === '/admin' ? 'nav-active' : undefined}
+                                onClick={handleAdminClick}
+                            >
+                                Panel Admin
+                            </a>
+                        </li>
+                    )}
+                    <li>
+                        {user ? (
+                            <div className="nav-user-session">
+                                <span className="nav-user-info" title={user.correo}>
+                                    <strong>{user.nombre}</strong> ({user.correo})
+                                    <span className="nav-role-badge">
+                                        {user.role === 'admin' ? 'Admin' : 'Usuario'}
+                                    </span>
+                                </span>
+                                <button
+                                    type="button"
+                                    id="logout-btn"
+                                    className="nav-auth-btn nav-logout-btn"
+                                    onClick={logout}
+                                >
+                                    Cerrar sesión
+                                </button>
+                            </div>
+                        ) : (
+                            <button
+                                type="button"
+                                id="open-login-btn"
+                                className="nav-auth-btn"
+                                aria-haspopup="dialog"
+                                aria-expanded={isLoginOpen}
+                                onClick={openLogin}
+                            >
+                                Iniciar sesión
+                            </button>
+                        )}
+                    </li>
                     <li>
                         <button
                             type="button"

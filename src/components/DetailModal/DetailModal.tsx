@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useShop } from '@/hooks'
 import { showErrorAlert } from '@utils/alerts'
-import { formatCurrency, getProductById } from '@utils/api'
+import { CATEGORY_LABELS, formatCurrency, getProductById } from '@utils/api'
 import type { Product } from '@utils/api'
 import './DetailModal.css'
 
@@ -12,7 +12,7 @@ interface LoadedDetailState {
 }
 
 export default function DetailModal() {
-    const { detailProductId, closeProductDetail } = useShop()
+    const { detailProductId, allProducts, closeProductDetail } = useShop()
     const dialogRef = useRef<HTMLDialogElement>(null)
     const [loadedDetail, setLoadedDetail] = useState<LoadedDetailState | null>(null)
 
@@ -37,14 +37,31 @@ export default function DetailModal() {
 
         let isCurrent = true
         const currentId = detailProductId
+        const localMatch =
+            allProducts.find((item) => String(item.id) === String(currentId)) ?? null
 
         async function fetchDetail() {
+            if (String(currentId).startsWith('local-') && localMatch) {
+                if (isCurrent) {
+                    setLoadedDetail({ id: currentId, product: localMatch, error: null })
+                }
+                return
+            }
+
             try {
                 const fetchedProduct = await getProductById(currentId)
                 if (isCurrent) {
-                    setLoadedDetail({ id: currentId, product: fetchedProduct, error: null })
+                    setLoadedDetail({
+                        id: currentId,
+                        product: localMatch ?? fetchedProduct,
+                        error: null
+                    })
                 }
             } catch (detailError) {
+                if (localMatch && isCurrent) {
+                    setLoadedDetail({ id: currentId, product: localMatch, error: null })
+                    return
+                }
                 console.error('No se pudo cargar el detalle:', detailError)
                 if (isCurrent) {
                     const errorMessage = 'No se pudo cargar el detalle del producto.'
@@ -62,7 +79,7 @@ export default function DetailModal() {
         return () => {
             isCurrent = false
         }
-    }, [detailProductId])
+    }, [detailProductId, allProducts])
 
     return (
         <dialog
@@ -92,7 +109,14 @@ export default function DetailModal() {
                         <>
                             <img src={product.imagen} alt={product.nombre} />
                             <h3>{product.nombre}</h3>
+                            <p>
+                                <strong>Categoría:</strong>{' '}
+                                {CATEGORY_LABELS[product.categoria] || product.categoria}
+                            </p>
                             <p>{product.descripcion}</p>
+                            <p>
+                                <strong>Stock disponible:</strong> {product.stock} unidades
+                            </p>
                             <strong>{formatCurrency(product.precio)}</strong>
                         </>
                     )}

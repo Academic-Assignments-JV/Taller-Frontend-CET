@@ -9,7 +9,7 @@ interface CardProps {
 }
 
 export default function Card({ product }: CardProps) {
-    const { addToCart, openProductDetail, selectProductForEdit, removeProduct } = useShop()
+    const { user, addToCart, openProductDetail, selectProductForEdit, removeProduct } = useShop()
 
     return (
         <article className="menu-card" data-category={product.categoria}>
@@ -31,6 +31,9 @@ export default function Card({ product }: CardProps) {
                     <span className="price-pill">{formatCurrency(product.precio)}</span>
                 </header>
                 <p>{product.descripcion}</p>
+                <span className={`stock-badge${product.stock <= 0 ? ' out-of-stock' : ''}`}>
+                    {product.stock > 0 ? `Stock disponible: ${product.stock}` : 'Agotado'}
+                </span>
                 <div className="card-footer">
                     <Button
                         variant="secondary"
@@ -39,26 +42,32 @@ export default function Card({ product }: CardProps) {
                     >
                         Ver detalle
                     </Button>
-                    <Button variant="add-cart" onClick={() => addToCart(product)}>
-                        Agregar
+                    <Button
+                        variant="add-cart"
+                        disabled={product.stock <= 0}
+                        onClick={() => addToCart(product)}
+                    >
+                        {product.stock > 0 ? 'Agregar' : 'Sin stock'}
                     </Button>
                 </div>
-                <div className="admin-card-actions">
-                    <button
-                        type="button"
-                        className="btn-edit-product"
-                        onClick={() => selectProductForEdit(product)}
-                    >
-                        Editar
-                    </button>
-                    <button
-                        type="button"
-                        className="btn-delete-product"
-                        onClick={() => void removeProduct(product.id)}
-                    >
-                        Eliminar
-                    </button>
-                </div>
+                {user?.role === 'admin' && (
+                    <div className="admin-card-actions">
+                        <button
+                            type="button"
+                            className="btn-edit-product"
+                            onClick={() => selectProductForEdit(product)}
+                        >
+                            Editar
+                        </button>
+                        <button
+                            type="button"
+                            className="btn-delete-product"
+                            onClick={() => void removeProduct(product.id)}
+                        >
+                            Eliminar
+                        </button>
+                    </div>
+                )}
             </div>
         </article>
     )

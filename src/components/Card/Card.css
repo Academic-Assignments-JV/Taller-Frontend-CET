@@ -106,6 +106,23 @@
     margin-top: 4px;
 }
 
+.stock-badge {
+    display: inline-block;
+    align-self: flex-start;
+    margin-top: 8px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-success);
+    background-color: rgba(46, 125, 50, 0.1);
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+}
+
+.stock-badge.out-of-stock {
+    color: var(--color-error);
+    background-color: rgba(198, 40, 40, 0.1);
+}
+
 /** Product card footer with detail and add-to-cart actions. */
 .card-footer {
     display: flex;
